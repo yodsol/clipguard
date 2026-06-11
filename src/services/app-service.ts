@@ -302,10 +302,8 @@ export class AppService {
 
   private testDetection(): void {
     const mockData = [
-      ''ghp_' + 'exampletoken1234567890testtoken1234567890'',
-      ''sk_live_' + 'test1234567890abcdefghijkl'',
+      'ghp_exampletoken1234567890testtoken1234567890',
       'AKIAIOSFODNN7EXAMPLE',
-      ''sk_test_' + 'example1234567890example'',
     ];
 
     const mockType = mockData[Math.floor(Math.random() * mockData.length)];
