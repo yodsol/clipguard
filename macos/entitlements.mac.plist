@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Accessibility - Required for clipboard monitoring -->
+	<key>com.apple.security.device.audio-input</key>
+	<false/>
+
+	<!-- Keyboard and input - Required for detecting clipboard changes -->
+	<key>com.apple.security.input-monitoring</key>
+	<true/>
+
+	<!-- App Sandbox - Enable sandboxing for security -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+
+	<!-- Network access - For future cloud integrations -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.network.server</key>
+	<false/>
+
+	<!-- File access - Read user's documents for context -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+
+	<!-- Temporary item access -->
+	<key>com.apple.security.temporary-exception.files.absolute-path.read-write</key>
+	<array/>
+
+	<!-- Allow JIT for Node.js performance -->
+	<key>com.apple.security.cs.allow-jit</key>
+	<true/>
+
+	<!-- Disable unsigned executable memory for security -->
+	<key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+	<false/>
+
+	<!-- Environment variable access -->
+	<key>com.apple.security.cs.debugger</key>
+	<false/>
+
+	<!-- Process debugging disabled for security -->
+	<key>com.apple.security.cs.disable-library-validation</key>
+	<false/>
+
+	<!-- USB device access if needed -->
+	<key>com.apple.security.device.usb</key>
+	<true/>
+
+	<!-- Hardware performance counters -->
+	<key>com.apple.security.device.camera</key>
+	<false/>
+
+	<key>com.apple.security.device.microphone</key>
+	<false/>
+
+	<!-- Location access -->
+	<key>com.apple.security.device.location</key>
+	<false/>
+
+	<!-- Bluetooth -->
+	<key>com.apple.security.device.bluetooth</key>
+	<false/>
+</dict>
+</plist>

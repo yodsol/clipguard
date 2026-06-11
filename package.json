@@ -1,0 +1,91 @@
+{
+  "name": "clipguard",
+  "version": "1.0.0",
+  "description": "Prevent accidental exposure of sensitive data when sharing with AI tools",
+  "main": "dist/main.js",
+  "homepage": "https://github.com/yogi-yodhin/clipguard",
+  "author": {
+    "name": "Yogi Nanasekaran",
+    "email": "sgnanasekaran@yodhinsolutions.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build:ts": "tsc",
+    "start": "npm run build:ts && electron .",
+    "dev": "tsc && electron . --dev",
+    "build": "npm run build:ts && electron-builder",
+    "build:mac": "npm run build:ts && electron-builder --mac",
+    "build:windows": "npm run build:ts && electron-builder --win",
+    "build:linux": "npm run build:ts && electron-builder --linux",
+    "pack": "npm run build:ts && electron-builder --dir",
+    "dist": "npm run build:ts && electron-builder",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "electron-store": "^9.0.0",
+    "is-admin": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "electron": "latest",
+    "electron-builder": "^26.15.2",
+    "eslint": "^8.0.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "typescript": "^5.0.0"
+  },
+  "build": {
+    "appId": "com.clipguard.app",
+    "productName": "ClipGuard",
+    "directories": {
+      "output": "dist-packages",
+      "buildResources": "assets"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "minimumSystemVersion": "10.13",
+      "forceCodeSigning": false
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ClipGuard"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/icon.png",
+      "category": "Utility"
+    }
+  }
+}

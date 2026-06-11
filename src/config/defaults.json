@@ -1,0 +1,25 @@
+{
+  "clipboard_poll_interval": 1000,
+  "auto_clear_delay": 1500,
+  "max_history": 100,
+  "detection_timeout": 5000,
+  "health_check_interval": 5000,
+  "log_level": "info",
+  "enable_sentry": false,
+  "features": {
+    "clipboard_monitoring": true,
+    "auto_clear_clipboard": false,
+    "detection_warnings": true,
+    "history_tracking": true,
+    "health_monitoring": true
+  },
+  "error_recovery": {
+    "max_critical_errors": 5,
+    "max_restarts_in_3min": 3,
+    "feature_retry_attempts": 3
+  },
+  "detection": {
+    "timeout_ms": 5000,
+    "pattern_update_interval": 3600000
+  }
+}

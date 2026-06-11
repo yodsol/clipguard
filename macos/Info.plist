@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>ClipGuard</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.yodhinsolutions.clipguard</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>ClipGuard</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.12</string>
+
+	<!-- Accessibility Permission - Required for clipboard monitoring -->
+	<key>NSAccessibilityUsageDescription</key>
+	<string>ClipGuard needs accessibility access to monitor your clipboard and detect sensitive data before it's shared with AI tools.</string>
+
+	<!-- Screen Recording Permission - Required on macOS Catalina+ (10.15) for clipboard content access in some contexts -->
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>ClipGuard uses screen recording permission to enhance detection of sensitive information in certain application contexts.</string>
+
+	<!-- Camera - Not used, but declared if future versions need it -->
+	<key>NSCameraUsageDescription</key>
+	<string>ClipGuard does not currently use your camera.</string>
+
+	<!-- Microphone - Not used, but declared if future versions need it -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ClipGuard does not currently use your microphone.</string>
+
+	<!-- User Privacy - Explaining data handling -->
+	<key>NSPrivacyTracking</key>
+	<false/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array/>
+
+	<!-- App Transport Security - Allow local connections for development -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<false/>
+		<key>NSExceptionDomains</key>
+		<dict/>
+	</dict>
+
+	<!-- Entitlements for sandboxing and security -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+	<key>com.apple.security.device.usb</key>
+	<true/>
+
+	<!-- Network - Allow local network for future enhancements -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.network.server</key>
+	<false/>
+
+	<!-- Code signing and hardened runtime -->
+	<key>com.apple.security.cs.allow-jit</key>
+	<true/>
+	<key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+	<false/>
+	<key>com.apple.security.cs.disable-executable-page-protection</key>
+	<false/>
+
+	<!-- Keyboard and Input - Required for clipboard monitoring -->
+	<key>com.apple.security.device.audio-input</key>
+	<false/>
+
+	<!-- Application Icons and Launch -->
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>ClipGuard may need to store configuration and audit logs.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>ClipGuard does not require access to Downloads folder.</string>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>ClipGuard does not require access to Desktop folder.</string>
+
+	<!-- URL Schemes - Allow opening system preferences -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>clipguard</string>
+			</array>
+		</dict>
+	</array>
+
+	<!-- Principal Class -->
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+
+	<!-- High Resolution capable -->
+	<key>NSHighResolutionCapable</key>
+	<true/>
+
+	<!-- Support Dark Mode -->
+	<key>NSRequiresIPhoneOS</key>
+	<false/>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
+</dict>
+</plist>

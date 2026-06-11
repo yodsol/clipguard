@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClipGuard - Protect Your Clipboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .status-section {
+      margin-bottom: 40px;
+    }
+
+    .status-title {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 16px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #999;
+    }
+
+    .permission-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      border-left: 3px solid #ddd;
+    }
+
+    .permission-item.granted {
+      border-left-color: #4caf50;
+      background: #f1f8f5;
+    }
+
+    .permission-item.denied {
+      border-left-color: #f44336;
+      background: #fef5f5;
+    }
+
+    .permission-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .permission-item.granted .permission-icon {
+      background: #4caf50;
+    }
+
+    .permission-item.denied .permission-icon {
+      background: #f44336;
+    }
+
+    .permission-item.unknown .permission-icon {
+      background: #999;
+    }
+
+    .permission-info {
+      flex: 1;
+    }
+
+    .permission-name {
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .permission-status {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .permission-item.granted .permission-status {
+      color: #4caf50;
+    }
+
+    .permission-item.denied .permission-status {
+      color: #f44336;
+    }
+
+    .monitoring-section {
+      margin: 40px 0;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+    }
+
+    .monitoring-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .monitoring-status {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .monitoring-status.active {
+      color: #4caf50;
+    }
+
+    .monitoring-status.inactive {
+      color: #f44336;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-flex;
+      width: 44px;
+      height: 24px;
+      background: #ccc;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+      border: none;
+    }
+
+    .toggle-switch.active {
+      background: #4caf50;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 10px;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+    }
+
+    .toggle-switch.active::after {
+      transform: translateX(20px);
+    }
+
+    .monitoring-description {
+      font-size: 12px;
+      color: #666;
+      margin-top: 12px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .btn-secondary:hover {
+      background: #eeeeee;
+    }
+
+    .info-box {
+      margin-top: 32px;
+      padding: 16px;
+      background: #e3f2fd;
+      border-radius: 8px;
+      border-left: 3px solid #2196f3;
+      font-size: 13px;
+      color: #1565c0;
+      line-height: 1.5;
+    }
+
+    .info-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    #notification-area {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .notification {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      max-width: 400px;
+      border-left: 4px solid;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(450px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .notification.critical {
+      border-left-color: #d32f2f;
+      background: #ffebee;
+    }
+
+    .notification.critical .notification-title {
+      color: #d32f2f;
+    }
+
+    .notification.high {
+      border-left-color: #f57c00;
+      background: #fff3e0;
+    }
+
+    .notification.high .notification-title {
+      color: #f57c00;
+    }
+
+    .notification.medium {
+      border-left-color: #fbc02d;
+      background: #fffde7;
+    }
+
+    .notification.medium .notification-title {
+      color: #f57f17;
+    }
+
+    .notification-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .notification-content {
+      font-size: 13px;
+      color: #333;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🛡️ ClipGuard</h1>
+      <p class="subtitle">Protect your clipboard from accidental data exposure</p>
+    </header>
+
+    <div id="notification-area"></div>
+
+    <div id="app" class="loading">
+      <div class="spinner"></div>
+      <p>Checking permissions...</p>
+    </div>
+
+    <div class="footer">
+      <p>Version <span id="version">1.0.0</span> • Cross-platform protection</p>
+    </div>
+  </div>
+
+  <script>
+    // Main application logic
+    const app = window.clipguard;
+
+    async function initializeApp() {
+      try {
+        // Get current permission state
+        const permissions = await app.permissions.getState();
+        const canMonitor = await app.permissions.canMonitor();
+
+        // Render permission status
+        renderPermissions(permissions, canMonitor);
+
+        // Display version
+        document.getElementById('version').textContent = app.appVersion;
+      } catch (error) {
+        console.error('Error initializing app:', error);
+        showError('Failed to initialize ClipGuard. Please restart the application.');
+      }
+    }
+
+    function renderPermissions(permissions, canMonitor) {
+      const appDiv = document.getElementById('app');
+      appDiv.innerHTML = '';
+
+      // Permissions section
+      if (app.platform === 'darwin') {
+        const statusSection = document.createElement('div');
+        statusSection.className = 'status-section';
+        statusSection.innerHTML = `
+          <div class="status-title">Permissions</div>
+          <div class="permission-item ${permissions.accessibility ? 'granted' : 'denied'}">
+            <div class="permission-icon">${permissions.accessibility ? '✓' : '✗'}</div>
+            <div class="permission-info">
+              <div class="permission-name">Accessibility</div>
+              <div class="permission-status">${permissions.accessibility ? 'Granted' : 'Required for clipboard monitoring'}</div>
+            </div>
+          </div>
+          <div class="permission-item ${permissions.screen_recording ? 'granted' : 'unknown'}">
+            <div class="permission-icon">${permissions.screen_recording ? '✓' : '?'}</div>
+            <div class="permission-info">
+              <div class="permission-name">Screen Recording</div>
+              <div class="permission-status">${permissions.screen_recording ? 'Granted' : 'Optional (macOS 10.15+)'}</div>
+            </div>
+          </div>
+        `;
+        appDiv.appendChild(statusSection);
+      } else if (app.platform === 'win32') {
+        const statusSection = document.createElement('div');
+        statusSection.className = 'status-section';
+        statusSection.innerHTML = `
+          <div class="status-title">Permissions</div>
+          <div class="permission-item ${permissions.admin_privileges ? 'granted' : 'unknown'}">
+            <div class="permission-icon">${permissions.admin_privileges ? '✓' : '!'}</div>
+            <div class="permission-info">
+              <div class="permission-name">Administrator Privileges</div>
+              <div class="permission-status">${permissions.admin_privileges ? 'Verified' : 'Recommended for full functionality'}</div>
+            </div>
+          </div>
+        `;
+        appDiv.appendChild(statusSection);
+      }
+
+      // Monitoring section
+      const monitoringSection = document.createElement('div');
+      monitoringSection.className = 'monitoring-section';
+      const monitoringStatus = canMonitor ? 'active' : 'inactive';
+      const statusText = canMonitor ? 'Monitoring Active' : 'Monitoring Disabled';
+      const statusColor = canMonitor ? '#4caf50' : '#f44336';
+
+      monitoringSection.innerHTML = `
+        <div class="monitoring-header">
+          <span class="monitoring-status ${monitoringStatus}">● ${statusText}</span>
+          <div class="toggle-switch ${canMonitor ? 'active' : ''}" id="monitoringToggle"></div>
+        </div>
+        <div class="monitoring-description">
+          ${canMonitor
+            ? 'Your clipboard is being monitored for sensitive data. You\'ll receive warnings before sharing with AI tools.'
+            : 'ClipGuard needs additional permissions to monitor your clipboard. Please grant permissions in system settings and restart.'}
+        </div>
+      `;
+      appDiv.appendChild(monitoringSection);
+
+      // Add toggle event listener
+      const toggle = document.getElementById('monitoringToggle');
+      if (toggle) {
+        toggle.addEventListener('click', async () => {
+          const enabled = !toggle.classList.contains('active');
+          const result = await app.monitoring.toggle(enabled);
+          console.log('Monitoring toggled:', result);
+        });
+      }
+
+      // Info box
+      const infoBox = document.createElement('div');
+      infoBox.className = 'info-box';
+      infoBox.innerHTML = `
+        <div class="info-title">🔒 How ClipGuard Works</div>
+        <p>ClipGuard monitors your clipboard in real-time and detects sensitive information like:</p>
+        <ul style="margin-left: 20px; margin-top: 8px;">
+          <li>API keys and tokens</li>
+          <li>Database credentials</li>
+          <li>Personal information</li>
+          <li>AWS/Azure credentials</li>
+          <li>Private SSH keys</li>
+        </ul>
+      `;
+      appDiv.appendChild(infoBox);
+
+      // Action buttons
+      const buttonGroup = document.createElement('div');
+      buttonGroup.className = 'button-group';
+      buttonGroup.innerHTML = `
+        <button class="btn-primary" id="requestPermsBtn">Request Permissions</button>
+        <button class="btn-secondary" id="settingsBtn">Settings</button>
+      `;
+      appDiv.appendChild(buttonGroup);
+
+      // Add button event listeners
+      document.getElementById('requestPermsBtn').addEventListener('click', async () => {
+        try {
+          await app.permissions.requestAll();
+          // Reinitialize after permissions change
+          setTimeout(initializeApp, 500);
+        } catch (error) {
+          console.error('Error requesting permissions:', error);
+        }
+      });
+
+      document.getElementById('settingsBtn').addEventListener('click', async () => {
+        try {
+          await app.window.openSettings();
+        } catch (error) {
+          console.error('Error opening settings:', error);
+        }
+      });
+    }
+
+    function showError(message) {
+      const appDiv = document.getElementById('app');
+      appDiv.innerHTML = `
+        <div style="padding: 20px; text-align: center;">
+          <p style="color: #f44336; margin-bottom: 16px;">${message}</p>
+          <button class="btn-primary" onclick="location.reload()">Retry</button>
+        </div>
+      `;
+    }
+
+    // Listen for sensitive data detections
+    app.on('sensitive-data-detected', (data) => {
+      showNotification(data);
+    });
+
+    function showNotification(data) {
+      const notificationArea = document.getElementById('notification-area');
+      const notification = document.createElement('div');
+      notification.className = `notification ${data.severity}`;
+
+      const typesList = data.types.map(t => t.type).join(', ');
+      notification.innerHTML = `
+        <div class="notification-title">⚠️ Sensitive Data Detected!</div>
+        <div class="notification-content">
+          <strong>${data.severity.toUpperCase()}:</strong> ${typesList}<br>
+          Found ${data.count} instance${data.count !== 1 ? 's' : ''} in your clipboard.
+        </div>
+      `;
+
+      notificationArea.appendChild(notification);
+
+      // Auto-remove after 6 seconds
+      setTimeout(() => {
+        notification.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => notification.remove(), 300);
+      }, 6000);
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
+  </script>
+</body>
+</html>

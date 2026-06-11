@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build outputs (TypeScript compiled)
+dist/
+
+# Packaged installers (attached as GitHub Release assets)
+dist-packages/
+
+# Test coverage
+coverage/
+
+# macOS
+.DS_Store
+*.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment / secrets
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/
+
+# electron-builder cache
+electron-builder-cache/

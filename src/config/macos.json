@@ -1,0 +1,20 @@
+{
+  "clipboard_poll_interval": 800,
+  "system_tray": {
+    "icon_size": 20,
+    "poll_visible": false
+  },
+  "notifications": {
+    "dialog_style": "native",
+    "use_system_notification": false
+  },
+  "permissions": {
+    "require_accessibility": false,
+    "check_screen_recording": true
+  },
+  "keyboard_shortcut": "Cmd+Shift+C",
+  "performance": {
+    "detector_max_latency": 100,
+    "memory_warning_threshold": 500
+  }
+}
