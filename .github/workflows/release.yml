@@ -23,42 +23,8 @@ jobs:
           name: macos-artifacts
           path: dist-packages/
 
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build:ts
-      - run: npm test
-      - run: npm run build:windows
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows-artifacts
-          path: dist-packages/
-
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build:ts
-      - run: npm test
-      - run: npm run build:linux
-      - uses: actions/upload-artifact@v4
-        with:
-          name: linux-artifacts
-          path: dist-packages/
-
   release:
-    needs: [build-macos, build-windows, build-linux]
+    needs: [build-macos]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -72,8 +38,6 @@ jobs:
         run: |
           mkdir -p release-files
           cp artifacts/macos-artifacts/* release-files/ 2>/dev/null || true
-          cp artifacts/windows-artifacts/* release-files/ 2>/dev/null || true
-          cp artifacts/linux-artifacts/* release-files/ 2>/dev/null || true
           ls -la release-files/
 
       - name: Create Release
