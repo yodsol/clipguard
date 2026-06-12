@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build:ts": "tsc",
+    "build:ts": "tsc && cp -r src/config dist/",
     "start": "npm run build:ts && electron .",
     "dev": "tsc && electron . --dev",
     "build": "npm run build:ts && electron-builder",
@@ -49,6 +49,7 @@
     },
     "files": [
       "dist/**/*",
+      "src/config/**/*",
       "node_modules/**/*",
       "package.json"
     ],

@@ -150,10 +150,19 @@ export class AppService {
   }
 
   private setupMacOSTray(): void {
-    const emptyIcon = nativeImage.createEmpty();
-    this.tray = new Tray(emptyIcon);
+    const icon = nativeImage.createFromDataURL(
+      'data:image/svg+xml;base64,' +
+        Buffer.from(`
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="7" width="10" height="7" rx="1" fill="black"/>
+          <rect x="5" y="5" width="6" height="2" rx="0.5" fill="black"/>
+          <circle cx="8" cy="11" r="0.8" fill="black"/>
+        </svg>
+      `).toString('base64')
+    );
+
+    this.tray = new Tray(icon);
     this.tray.setToolTip('ClipGuard - Clipboard Protection');
-    this.tray.setTitle('🔒 CG');
     this.logger.info('macOS tray setup complete (menu bar)');
   }
 
