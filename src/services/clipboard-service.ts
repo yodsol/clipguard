@@ -72,12 +72,18 @@ export class ClipboardService {
   private handleDetection(detection: any): void {
     const settings = this.storage.getSettings();
 
+    this.logger.info(`[DETECTION] Found: ${detection.types.map((t: any) => t.type).join(',')} | showingDialog=${this.showingDialog}`);
+
     // Show warning dialog only once at a time (prevents stacking)
     if (settings.show_warnings && !this.showingDialog) {
+      this.logger.info('[DIALOG] Showing warning dialog');
       this.showingDialog = true;
       this.showWarningDialog(detection, settings.auto_clear_clipboard).finally(() => {
+        this.logger.info('[DIALOG] Dialog closed');
         this.showingDialog = false;
       });
+    } else {
+      this.logger.info(`[DIALOG] SKIPPED - show_warnings=${settings.show_warnings}, showingDialog=${this.showingDialog}`);
     }
 
     // Send IPC event if window exists

@@ -3,6 +3,19 @@ import { AppService } from './services/app-service';
 
 let appService: AppService;
 
+// Prevent multiple instances from running
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  console.log('[MAIN] Another instance is already running. Exiting.');
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    console.log('[MAIN] Another instance tried to start. Focusing existing window.');
+    // Could show main window here if it exists
+  });
+}
+
 app.on('ready', async () => {
   console.log('[MAIN] App ready event fired');
 
