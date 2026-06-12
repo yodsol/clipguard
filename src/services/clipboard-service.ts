@@ -12,8 +12,7 @@ interface ClipboardServiceOptions {
 export class ClipboardService {
   private monitoringInterval: NodeJS.Timeout | null = null;
   private lastClipboardContent = '';
-  private lastDetectionTime = 0;
-  private detectionDebounceMs = 2000;
+  private lastAnalyzedContent = '';
   private mainWindow: BrowserWindow | null = null;
   private pollInterval: number;
   private showingDialog = false;
@@ -44,6 +43,7 @@ export class ClipboardService {
 
         if (currentContent !== this.lastClipboardContent && currentContent.trim()) {
           this.lastClipboardContent = currentContent;
+          this.lastAnalyzedContent = '';
           this.analyze(currentContent);
         }
       } catch (err) {
@@ -63,21 +63,14 @@ export class ClipboardService {
   private analyze(content: string): void {
     const detection = this.detector.detect(content);
 
-    if (detection.found) {
+    if (detection.found && content !== this.lastAnalyzedContent) {
+      this.lastAnalyzedContent = content;
       this.handleDetection(detection);
     }
   }
 
   private handleDetection(detection: any): void {
     const settings = this.storage.getSettings();
-    const now = Date.now();
-
-    // Debounce: ignore detections within 2 seconds of the last one
-    if (now - this.lastDetectionTime < this.detectionDebounceMs) {
-      return;
-    }
-
-    this.lastDetectionTime = now;
 
     // Show warning dialog only once at a time (prevents stacking)
     if (settings.show_warnings && !this.showingDialog) {
