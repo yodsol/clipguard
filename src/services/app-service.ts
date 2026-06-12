@@ -153,16 +153,17 @@ export class AppService {
     const icon = nativeImage.createFromDataURL(
       'data:image/svg+xml;base64,' +
         Buffer.from(`
-        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="7" width="10" height="7" rx="1" fill="black"/>
-          <rect x="5" y="5" width="6" height="2" rx="0.5" fill="black"/>
-          <circle cx="8" cy="11" r="0.8" fill="black"/>
+        <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="8" width="12" height="8" rx="1" fill="white"/>
+          <rect x="5" y="5" width="8" height="3" rx="1" fill="white"/>
+          <circle cx="9" cy="13" r="1" fill="white"/>
         </svg>
       `).toString('base64')
     );
 
     this.tray = new Tray(icon);
     this.tray.setToolTip('ClipGuard - Clipboard Protection');
+    this.tray.setTitle('CG');
     this.logger.info('macOS tray setup complete (menu bar)');
   }
 
